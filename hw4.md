@@ -95,7 +95,7 @@ class Board{
         }
     }
       ```
-4. - It might not violate any principle
+4. - It might not violate any principle (may be _**DRY**_ if two methods `slashWithSword` and `pokeWithSpear` are mostly similar). Perhaps it should make `slashWithSword` and `pokeWithSpear` `private` as well.
   - 
   ```
 public class Player
