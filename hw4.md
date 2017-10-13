@@ -42,7 +42,8 @@ class Set<T> extends Base<T>{
 }
  ```
 2. - It violates _**SRP**_ and _**God Class**_, class `Game` shouldn't have all methods in it and condition checking could be more concise.
-  - ```
+  - 
+  ```
   class Game {
         private Board board;
         public void move() {
@@ -68,7 +69,8 @@ class Board{
 }
 ```
 3. - It violates _**DRY**_. It just computes the average of all parameters and displays them, which could be done in more concise code.
-   - ```
+   - 
+   ```
    class WeatherStation {
         void updateDisplay () {
             String[] params = {"Temps", "Directions"};
@@ -94,7 +96,8 @@ class Board{
     }
       ```
 4. - It might not violate any principle
-  - ```
+  - 
+  ```
 public class Player
 {
     private int weaponType;
