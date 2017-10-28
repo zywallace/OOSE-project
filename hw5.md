@@ -1,4 +1,7 @@
-1. 1. If the code between the assignment to the temperate variable and the use of the temperate variable changed the value of the expression, this refactoring would fail.
+# Yu Zhao
+# JHED: yzhao86
+
+1. (1) If the code between the assignment to the temperate variable and the use of the temperate variable changed the value of the expression, this refactoring would fail.
    ```
    int quantity = 300;
    double itemPrice = 2.5;
@@ -17,17 +20,39 @@
    }
    ```
    Like above, the result would be 1470 while the original one should return 735.
-   1. If the class also has setter, it would
+
+   (2) Private field would make this refactoring problematic. For example:
    ```
-   class Person implements Employee{
-     public String getPhoneNumber(){
-       //code
-     }
+   class People{
+       private String name, phoneNumber;
+       public void setInfo(String num, String name){
+           setPhoneNumber(num);
+           setName(name);
+       }
+       private void setPhoneNumber(String num){
+           phoneNumber = num;
+       }
+   }
+   //after refactoring
+   class People{
+       private String name;
+       private Phone phone;
+       public void setInfo(String num, String name){
+           phone.setPhoneNumber(num);
+           setName(name);
+       }
+   }
+
+   class Phone{
+       private String phoneNumber;
+       //if it's not public method it would cause an error
+       private void setPhoneNumber(String num){
+           phoneNumber = num;
+       }
    }
    ```
-   Refactoring of extract class would have a separate class `TelephoneNumber` and getter,
-   but it would
-   1. If original class has subclass, it might fail. For example,
+
+   (3) If original class has subclass, it might fail. For example,
    ```
    class Project {
        Person[] participants;
@@ -76,9 +101,36 @@
      ;
    }
    ```
-   1. 1
-   1. 1
-   1. It might have the same problem as i.
+   (4)
+   ```
+   class MyStack extends MyVector{  
+   }
+   MyVector a = MyStack();
+   //After refactoring
+   class MyStack{  
+        MyVector v = new MyVector();
+   }
+   //below would cause exception
+   MyVector a = MyStack();
+   ```
+
+   (5) Private variable would cause some problem. For example:
+   ```
+   class Bird{
+       private double weight;
+   }
+   // after refactoring
+   abstract class Bird{
+       private double weight;
+   }
+   class Jay extends Bird{
+       public double getSpeed(){
+           //if calculation used weight, it might not have access to it
+       }
+   }
+   ```
+
+   (6) It might have the same problem as (1).
    ```
    int basePrice = quantity * itemPrice;
    double seasonDiscount = this.getSeasonalDiscount();
@@ -93,7 +145,8 @@
    double finalPrice = discountedPrice(basePrice);
    ```
    may have different result.
-   1. If the superclass has more than one subclass, it may fail. For example:
+
+   (7) If the superclass has more than one subclass, it may fail. For example:
    ```
    class Transport{
      ;
@@ -107,16 +160,56 @@
    ```
    If we merge `Car` into `Transport`, then we could also call `getDriver()` for the
    instance of `Plane`.
-   1.
-1. 1. Replace Conditional with Polymorphism or Replace Type Code with State/Strategy.
-   1. Replace Inheritance with Delegation
-   1. Form Template Method
-   1. Incline Temp
-   1. Replace Inheritance With Delegation and Replace Delegation With Inheritance. Incline/Exact Class and Incline/Exact Method
-   1. Replace Inheritance With Delegation and Replace Delegation With Inheritance
-1. 1. Replace Conditional with Polymorphism
-   1. Incline Temp and Incline Method
-   1. Replace Inheritance with Delegation
-   1. Replace Parameter with Method Call or Introduce Parameter Object
-   1. Exact class
-   1. Exact method
+
+   (8) Below it's a trivial case for this one since primitives are passed by value in Java
+   ```
+   public void swap(int a, int b){
+       int t = a;
+       a = b;
+       b = t;
+   }
+   //after refactoring
+   public void swap(Data data){
+       int t = data.a;
+       data.a = data.b;
+       data.b = t;
+   }
+   class Data{
+       int a, b;
+       public Data(int a, int b){
+            this.a = a;
+            this.b = b;
+       }
+   }
+   public static void main(String[] args){
+       int a = 1, b = 2;
+       swap(a, b);
+       //a = 1 and b = 2 still
+       Data data = new Data(1, 2);
+       //data.a = 1 data.b = 2
+       swap(data);
+       //data.a = 2 data.b = 1
+   }
+   ```
+2. (a) Replace Conditional with Polymorphism or Replace Type Code with State/Strategy.
+
+   (b) Replace Inheritance with Delegation
+
+   (c) Form Template Method
+
+   (d) Incline Temp
+
+   (e) Replace Inheritance With Delegation and Replace Delegation With Inheritance. Incline/Exact Class and Incline/Exact Method
+
+   (f) Replace Inheritance With Delegation and Replace Delegation With Inheritance
+3. (a) Replace Conditional with Polymorphism
+
+   (b) Incline Temp and Incline Method
+
+   (c) Replace Inheritance with Delegation
+
+   (d) Replace Parameter with Method Call or Introduce Parameter Object
+
+   (e) Exact class
+
+   (f) Exact method
