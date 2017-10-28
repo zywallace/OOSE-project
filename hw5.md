@@ -105,13 +105,13 @@
    ```
    class MyStack extends MyVector{  
    }
-   MyVector a = MyStack();
+   MyVector a = new MyStack();
    //After refactoring
    class MyStack{  
         MyVector v = new MyVector();
    }
    //below would cause exception
-   MyVector a = MyStack();
+   MyVector a = new MyStack();
    ```
 
    (5) Private variable would cause some problem. For example:
