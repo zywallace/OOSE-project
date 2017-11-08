@@ -1,7 +1,7 @@
 # Yu Zhao
 # JHED: yzhao86
 1.
-   1. Delegation of OO is like the pointer/reference of a method. It lets program run method of receiver in the context(parameters) of the sender.
+   1. Delegation of OO is like the pointer/reference of a method. It lets program run method of receiver in the context(like parameters in class) of the sender.
    2.
       1. Yes since `Observable` would hold a list of `Observer` and call `update()` in `notifyObservers()`.
       2. No.
@@ -18,7 +18,7 @@
       13. No.
       14. Yes since `Component` would hold a list of its child (also `Component`) and calling `print()` would also call `print()` in its child.
 2.
-   1. It means program should know the functionality and don't care the detail of implementation.
+   1. It means program should only know the functionality and don't care the detail of implementation.
    2.
       1. Yes since `Observer` in this case should be interface and Observable holds a list of concrete implementation of `Observer`.
       2. Yes since there is an interface which has the factory or method declared. And implementers specialize this factory to create the kinds of objects they need.
@@ -38,32 +38,42 @@
    1. Facade pattern
    ```
    class MyFacade {
-		private List<Object> A;
-		private List<Object> B;
+		private List<Object> decorator;
 
-		public MyFacade() {
-			this.A = new ArrayList<>();
-			this.B = new ArrayList<>();
+		public MyFacade(List<Object> A, List<Object> B) {
+			this.decorator = new ListDecorator(A, B);
 		}
 
 		public List<Object> get() {
-			return this.A;
-		}
-
-		public void add(Object e) {
-			if (this.B.contains(e)) {
-				this.A.add(e);
-			} else {
-				System.out.println("element not in list B");
-			}
+			return this.decorator;
 		}
 	}
+
+  class ListDecorator implements List<Object>{
+    private List<Object> A;
+    private List<Object> B;
+
+    public ListDecorator (List<Object> A, List<Object> B) {
+        this.A = A;
+        this.B = B
+    }
+
+    public void add(Object e) {
+   		if (this.B.contains(e)) {
+   			this.A.add(e);
+   		} else {
+   			System.out.println("element not in list B");
+   		}
+ 	  }
+    //other methods that grants access to A only, those methods should be identical to A's methods except for methods may change the objects in A, like `add()` `addAll()` `set()`.
+  }
+
    ```
    2. State pattern. I would have 3 state objects: `newOrder` `paidOrder` and `shippedOrder`. All of them would have `change()` and `cancel()` methods respectively. `Order` class should have these three objects as fields and an state field to indicate current state. `pay()` or some other methods may change the current state and `Order.change()` or `Order.cancel()` will just call `this.state.change()` or `this.state.cancel()`.
 4.
-   1. State pattern. In order to get rid of switch statement, we could combine `level` and other related methods into state. It shall have 3 state variables respectively and states now have clear reifications as class names.
-   2. Strategy pattern. This is the typical usage of Strategy pattern: perform different algorithm with different state. It would simplify the code and in this problem, improve the performance.
-   3.
+   1. State pattern. In order to get rid of switch statement, we could combine `level` and other related methods into state interface. It shall have 3 state classes implements State interface respectively and states now have clear reifications as class names. Then `FitnessCustomer` should have a field to indicate current state and `setState()` method to replace `setLevel()` method.
+   2. Strategy pattern. This is the typical usage of Strategy pattern: perform different algorithm with different state. It would simplify the code (get rid of hideous switch case statement) and in this problem, improve the performance.
+   3. Observer pattern. Busy waiting should be expected in the while loop and it would use tons of CPU resource. So we could have a thread pool as Observable and whenever a new thread is created, we add it to the thread pool. Then when a thread is finished, thread pool calls `update()` to invoke other threads' `update()` method, which tells they could do their cleanup process.
 5.
    - Observer: `addListener()` `removeListener()` and `fireEvent()` use observer pattern
    - Decorator: `read()` method
