@@ -1,6 +1,6 @@
 # Yu Zhao
 # JHED: yzhao86
-1.
+1. 
    1. Delegation of OO is like the pointer/reference of a method. It lets program run method of receiver in the context(like parameters in class) of the sender.
    2.
       1. Yes since `Observable` would hold a list of `Observer` and call `update()` in `notifyObservers()`.
@@ -69,7 +69,6 @@
  		// identical to A's methods except for methods may change the objects in
  		// A, like `add()` `addAll()` `set()`.
  	}
-
    ```
    2. State pattern. I would have 3 state objects: `newOrder` `paidOrder` and `shippedOrder`. All of them would have `change()` and `cancel()` methods respectively. `Order` class should have these three objects as fields and an state field to indicate current state. `pay()` or some other methods may change the current state and `Order.change()` or `Order.cancel()` will just call `this.state.change()` or `this.state.cancel()`.
 4.
