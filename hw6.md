@@ -38,35 +38,37 @@
    1. Facade pattern
    ```
    class MyFacade {
-		private List<Object> decorator;
+ 		private List<Object> decorator;
 
-		public MyFacade(List<Object> A, List<Object> B) {
-			this.decorator = new ListDecorator(A, B);
-		}
+ 		public MyFacade(List<Object> A, List<Object> B) {
+ 			this.decorator = new ListDecorator(A, B);
+ 		}
 
-		public List<Object> get() {
-			return this.decorator;
-		}
-	}
+ 		public List<Object> get() {
+ 			return this.decorator;
+ 		}
+ 	}
 
-  class ListDecorator implements List<Object>{
-    private List<Object> A;
-    private List<Object> B;
+ 	class ListDecorator implements List<Object> {
+ 		private List<Object> A;
+ 		private List<Object> B;
 
-    public ListDecorator (List<Object> A, List<Object> B) {
-        this.A = A;
-        this.B = B
-    }
+ 		public ListDecorator (List<Object> A, List<Object> B) {
+ 	        this.A = A;
+ 	        this.B = B
+ 	    }
 
-    public void add(Object e) {
-   		if (this.B.contains(e)) {
-   			this.A.add(e);
-   		} else {
-   			System.out.println("element not in list B");
-   		}
- 	  }
-    //other methods that grants access to A only, those methods should be identical to A's methods except for methods may change the objects in A, like `add()` `addAll()` `set()`.
-  }
+ 		public void add(Object e) {
+ 			if (this.B.contains(e)) {
+ 				this.A.add(e);
+ 			} else {
+ 				System.out.println("element not in list B");
+ 			}
+ 		}
+ 		// other methods that grants access to A only, those methods should be
+ 		// identical to A's methods except for methods may change the objects in
+ 		// A, like `add()` `addAll()` `set()`.
+ 	}
 
    ```
    2. State pattern. I would have 3 state objects: `newOrder` `paidOrder` and `shippedOrder`. All of them would have `change()` and `cancel()` methods respectively. `Order` class should have these three objects as fields and an state field to indicate current state. `pay()` or some other methods may change the current state and `Order.change()` or `Order.cancel()` will just call `this.state.change()` or `this.state.cancel()`.
