@@ -81,6 +81,92 @@ Defensive: slow(at runtime) but robust
 contract: fast(at compile) but something bad may happen in runtime
 
 # Implementation and Testing
+## Implementation
+Iteration planning - Prioritizing features, Planning your iterations
+
+Releases and release terminology
+version X.Y.Z (e.g. 10.8.3) means major version X, minor version Y, patch version Z.
+
+Implementation Principles
+1. Practice Collective Code Ownership
+2. Communicate
+3. Continuous Integration (CI)
+4. Have a coding standard
+5. Program in pairs
+6. Version Control
+
+## Testing
+### Unit Testing - test coverage
+### Acceptance testing - BDD
+### Integration Testing - CI
+
+# Refactoring
+## Methods
+1. Extract/Inline Method/class - for too big/small method/class
+2. Move Method/Field - wrong place
+3. Temp: Inline []- perform cal in place, replace [] with query - get rid of temp, split [] - one var for one purpose
+4. Replace Method With Method Object
+5. Collapse Hierarchy — combine under-utilized subclass !may violate LSP: Car becomes superclass(Transport) of Plane
+6. Replace Inheritance <-> Delegation — I->D(Vector <- Stack) if violate LSP. inheritance is more expressive, delegation is more flexible. D->I(Person<-employee)
+7. Encapsulate Field — use getters and setters 
+8. Replace Conditional With Polymorphism — replace switch on your own data with dynamic dispatch (Bird interface with implementor)
+9. Replace Type Code with State/Strategy - design pattern
+10. Introduce Assertion — one tool to help program defensively
+11. Replace Parameter With Method Call — don't pass things the callee can get on their own
+12. Introduce Parameter Object — If a certain group of parameters is always being passed together, make an object in their own right
+13. Form Template Method — Template design pattern
+## Anti-pattern
+1. Analysis Paralysis — going round and round on planning (overthinking it) without building anything.
+2. Bike Shedding — wasting too much time on trivial aspects of an important project
+3. Big Ball of Mud — code with poor separation of concerns
+4. Input Kludge — input check!
+5. BaseBean — don't inherit when relation is not is-a, delegate instead. Related to LSP and replace inheritance with delegation above.
+6. Call Super — don't require subclass overrider to call super method, its a bad interface boundary. Note this one is contentious, its a trade-off.
+7. Circle-Ellipse Problem — LSP problem
+8. Sequential Coupling — methods with an implicit constraint on which one must be called first.
+## Fix
+1. Duplicated Code - extract method/class
+2. Long method - extract methods
+3. Long Parameter List - replace parameter with method/introduce parameter object
+4. Divergent Change (SRP violation) - extract class
+5. Shotgun Surgery: add a new feature needs copy/paste to lots of place - move method/class
+6. Feature Envy: Method in one class uses lots of pieces from another class -  Move method
+7. Data Clumps: Data that's always hanging with each other (e.g. name/street/zip) - Extract a data class
+8. Switch (case) statements - Use inheritance and polymorphism
+9. Lazy Class: class does nothing - collapse hierarchy or inline class
+10. Speculative generality: Think too much - like 9
+11. Message chains - hide delegate
+12. Inappropriate Intimacy/Object orgy: directly getting in and munging with the internals of another class - move method
+13. Data Class / god class / Data-centric design  - extract method and move
+14. Comments — extract method.
+
+# Idioms
+1. Consider using static factory methods in place of class constructors
+- why: flexibility
+- how: use static method and newInstance()
+2. Implementing the Singleton Pattern in Java
+- why: encapsulation and singleton behavior
+3. Minimize Accessibility
+Start out with things private and loosen up as needed
+- why: encapsulation
+4. Be Immutable Whenever Possible
+- why:  immutable objects can be shared freely without risk.. Thus they are always thread-safe.
+- how:  initialize the object in the constructor and use as many final as possible
+5. When Using Inheritance be Clear and Robust or ... Don't Inherit
+- why: Inheritance breaks the normal class encapsulation boundary - you are mucking with the superclass' code when you override methods
+6. Favor Composition Over Inheritance
+- why: a whole-object holding on to (in a field) a part-object. By delegating some methods sent to the whole to the part (forwarding them) we achieve something similar to inheritance minus ability of overriding to change part's behavior. It doesn't violate class encapsulation -- it obeys the OCP
+7. Avoid switch whenever possible
+- why: this is data-centric design
+- how: Let the object do the work instead, as a method. Use some refactoring methods
+
+8. Overriding equals: instance be transitive, reflexive, symmetric, and have a faithful hashCode implemented for it.
+9. Use enums instead of int constants
+10. Minimize the scope of local variables.
+11. Use checked exceptions for things the caller can recover from and unchecked exceptions for things they can't recover from.
+12. Reuse existing exceptions built into Java whenever possible.
+13. Throw exceptions understandable by the caller only
+14. Don't just catch and ignore exceptions
 
 # Design Pattern
 ## Observer - Loose Coupling
