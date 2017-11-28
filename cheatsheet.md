@@ -44,8 +44,46 @@ UML:
 2. Inheritance
 3. Composition
 
-# Design Pattern - when/why/how
-## Observer
+# Design Principle
+## Encapsulate What Varies
+- when: for example, encapsulate how you calculate tax
+- why: more maintainable code
+- how: encapsulate code that may change
+
+## The Data-centric Design / God Class Anti-Pattern
+- when: one really fat class doing all the operations and other tiny classes just hold data
+- how: push methods from the big class in the center out to the data classes
+
+## The Open-Closed Principle (OCP)
+- when: in the use of inheritance 
+- why: more reliable
+- how: Make code which is open for extending, but closed for modifying. (1) all final and composition (2) only not final those need to be overridden
+
+## Don't Repeat Yourself (DRY)
+- why: avoid duplicate code which is hard to maintain
+
+## The Single Responsibility Principle (SRP)
+- when: god class
+- why: have its focus
+
+## The Liskov Substitution Principle (LSP)
+- when: invariant constraint may fail for example:  setHeight should not change weight
+- why: A is-a B doesn't indicate A is a subclass of B
+- how: make a superclass of A and B 
+
+## The Interface Segregation Principle (ISP)
+- when: lots of methods in interface is not useful
+- why:  methods are not allocated precisely enough
+- how:  turn one interface into many
+
+## Design by Contract and Defensive Programming
+Defensive: slow(at runtime) but robust
+contract: fast(at compile) but something bad may happen in runtime
+
+# Implementation and Testing
+
+# Design Pattern
+## Observer - Loose Coupling
 - when: If there is some change which you would want to broadcast to the rest of the program
 - why: It decouples subjects and observers, they are only loosely acquainted. More separation of concerns.
 - how: Observable(class) class maintain a list of Observers(interface). When an Observable object is updated, it invokes the update() method of each of its Observers to notify that, it is changed.
@@ -61,13 +99,13 @@ UML:
 - when: there is an interface, but it isn't quite what you need and you cant change it
 - why: make something old look like something new
 - how: Target - adapter(implements target) - has an adaptee
-## Facade
+## Facade - Least knowledge
 - when: Provide a unified interface to a set of interfaces in a subsystem
 - why: defines a higher-level interface that makes the subsystem easier to use
 - how:
-## Factories
+## Factories - Dependency Inversion Principle
 - when: method creating objects rather than directly invoking new
-- why: could be parametric and provide abstraction
+- why: could be parametric and provide abstraction/encapsulation
 ## Proxy
 - when: a placeholder for another object to control access to it.
 - why: skip time consuming methods.
